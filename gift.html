@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klaim Bonus - Insta-Wealth</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+:root {
+    --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    --white: #ffffff;
+    --text-dark: #262626;
+    --bg-wallet: #1c1c1e;
+    --box-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+body { background-color:#f0f2f5; display:flex; justify-content:center; }
+
+.app-container {
+    width:100%; max-width:414px; background-color: var(--white);
+    min-height:100vh; position:relative; overflow:hidden;
+}
+
+/* Header */
+.header { padding:15px 20px; display:flex; align-items:center; justify-content:space-between; background: var(--white); border-bottom:1px solid #f2f2f2; }
+.back-btn { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1.5px solid #efefef; cursor:pointer; }
+.header-title { flex:1; text-align:center; font-weight:700; font-size:17px; background: var(--ig-gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+/* Wallet */
+.wallet-card {
+    margin:25px 20px; padding:25px; border-radius:24px;
+    background: var(--bg-wallet); color:white; text-align:center; position:relative;
+    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+    opacity:0; transform:translateY(20px) scale(0.95);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.wallet-label { font-size:11px; color:#8e8e93; font-weight:600; text-transform:uppercase; letter-spacing:1.2px; margin-bottom:8px; display:block; }
+.balance-amount { font-size:26px; font-weight:700; color:#f09433; }
+
+/* Claim box */
+.claim-box {
+    margin:0 20px; padding:30px 25px; border-radius:24px;
+    background: var(--box-gradient); color:white;
+    box-shadow:0 10px 25px rgba(118,75,162,0.3);
+    opacity:0; transform:translateY(20px) scale(0.95);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.section-title { font-weight:700; font-size:16px; margin-bottom:20px; display:flex; align-items:center; gap:10px; justify-content:center; }
+.section-title i { font-size:18px; }
+
+.input-wrapper { position:relative; margin-bottom:20px; }
+.bonus-input { width:100%; padding:16px; border-radius:15px; border:none; background:rgba(255,255,255,0.2); font-size:16px; font-weight:600; text-align:center; outline:none; transition:0.3s; color:white; }
+.bonus-input::placeholder { color: rgba(255,255,255,0.6); font-weight:400; }
+.bonus-input:focus { background:rgba(255,255,255,0.3); box-shadow:0 0 15px rgba(255,255,255,0.2); }
+
+.claim-btn { width:100%; padding:16px; border-radius:15px; background: var(--white); border:none; color:#764ba2; font-weight:700; font-size:16px; cursor:pointer; transition:0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+.claim-btn:active { transform: scale(0.96); opacity:0.9; }
+
+.hint { text-align:center; font-size:11px; color:#bbb; margin-top:30px; padding:0 40px; line-height:1.6; opacity:0; transform:translateY(20px) scale(0.95); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+
+/* Overlay box */
+.overlay-box {
+    padding:30px 40px; border-radius:20px; text-align:center; font-size:20px; font-weight:700;
+    max-width:300px; width:80%; color:white; background: var(--ig-gradient); background-clip: border-box; 
+    display:flex; justify-content:center; align-items:center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+<header class="header">
+    <div class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></div>
+    <span class="header-title">Klaim Bonus</span>
+    <div style="width:38px"></div>
+</header>
+
+<div class="wallet-card">
+    <span class="wallet-label">Total Saldo Penarikan</span>
+    <div class="balance-amount" id="saldoPenarikan">Rp 0</div>
+</div>
+
+<div class="claim-box">
+    <div class="section-title"><i class="fas fa-gift"></i> Kode Bonus</div>
+    <div class="input-wrapper">
+        <input type="text" class="bonus-input" placeholder="Masukkan Kode Disini">
+    </div>
+    <button class="claim-btn" onclick="klaimBonus()">Ambil Bonus Sekarang</button>
+</div>
+
+<div class="hint">Pastikan kode bonus yang Anda masukkan benar. Bonus akan otomatis ditambahkan ke saldo penarikan Anda setelah klaim berhasil.</div>
+</div>
+
+<script>
+// ===== Proteksi Login =====
+if(localStorage.getItem("APP_LOGIN") !== "true") location.href="daftar-masuk.html";
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+const user = users[index];
+if(!user){ localStorage.clear(); location.href="daftar-masuk.html"; }
+
+if(!user.saldo) user.saldo={penarikan:0, deposit:0};
+if(!user.transaksi) user.transaksi=[];
+if(!user.bonusClaimed) user.bonusClaimed=[];
+
+// ===== Kode bonus =====
+const BONUS_CODES = {
+    "155440": {value:5000,type:"penarikan"},
+    "WELCOME70": {value:5000,type:"penarikan"},
+        "355SH0": {value:250000,type:"deposit"},
+    "WELCOME0": {value:5000,type:"penarikan"},
+    "WELCOME80": {value:5000,type:"penarikan"},
+    "INSTABONUS": {value:10000,type:"penarikan"},
+    "HADIAH2025": {value:20000,type:"penarikan"},
+    "40": {value:10000,type:"deposit"},
+    "DEPO70": {value:10000,type:"deposit"},
+    "DEPO90": {value:10000,type:"deposit"},
+    "00": {value:1000000,type:"deposit"},
+    "DEPO500": {value:50000,type:"deposit"}
+};
+
+// ===== Render saldo =====
+function renderSaldo(){ document.getElementById("saldoPenarikan").innerText = "Rp "+user.saldo.penarikan.toLocaleString("id-ID"); }
+function saveUser(){ users[index]=user; localStorage.setItem("APP_USERS",JSON.stringify(users)); }
+
+// ===== Klaim bonus =====
+function klaimBonus(){
+    const input = document.querySelector(".bonus-input");
+    const kode = input.value.trim().toUpperCase();
+    if(!kode){ showOverlay("Masukkan kode bonus!"); return; }
+    if(!BONUS_CODES[kode]){ showOverlay("Kode bonus tidak valid!"); return; }
+    if(user.bonusClaimed.includes(kode)){ showOverlay("Kode bonus ini sudah digunakan!"); return; }
+
+    const reward = BONUS_CODES[kode];
+    if(reward.type==="penarikan") user.saldo.penarikan += reward.value;
+    else user.saldo.deposit += reward.value;
+
+    user.transaksi.unshift({
+        id:"TRX-"+Date.now(),
+        jenis:"kas",
+        keterangan:"Bonus Kode "+kode,
+        jumlah:reward.value,
+        status:"Berhasil",
+        tanggal:new Date().toLocaleString("id-ID"),
+        time:Date.now()
+    });
+
+    user.bonusClaimed.push(kode);
+    saveUser();
+    renderSaldo();
+    input.value="";
+    showOverlay("Selamat! Bonus Berhasil Diklaim Rp "+reward.value.toLocaleString('id-ID'), true);
+}
+
+// ===== Overlay box =====
+function showOverlay(msg, isSuccess=false){
+    const overlay = document.createElement("div");
+    overlay.style.cssText="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:10000;opacity:0;transition:opacity 0.5s ease-out;";
+    const box = document.createElement("div");
+    box.className = "overlay-box";
+    box.textContent = msg;
+    if(!isSuccess) box.style.background = "#ff4d4d";
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    setTimeout(()=>{ overlay.style.opacity='1'; },50);
+
+    // ===== Confetti hanya untuk success =====
+    if(isSuccess){
+        const rect = box.getBoundingClientRect();
+        const boxCenterX = rect.left + rect.width/2;
+        const boxCenterY = rect.top + rect.height/2;
+        confetti({
+            particleCount: 150,
+            startVelocity: 25,
+            spread: 90,
+            origin: { x: boxCenterX / window.innerWidth, y: boxCenterY / window.innerHeight },
+            ticks: 200
+        });
+    }
+
+    setTimeout(()=>{ overlay.style.opacity='0'; setTimeout(()=>overlay.remove(),500); },2500);
+}
+
+// ===== Animasi masuk halaman =====
+function initAnimations(){
+    const wallet = document.querySelector('.wallet-card');
+    const claimBox = document.querySelector('.claim-box');
+    const hint = document.querySelector('.hint');
+
+    setTimeout(()=>{ wallet.style.opacity='1'; wallet.style.transform='translateY(0) scale(1)'; },100);
+    setTimeout(()=>{ claimBox.style.opacity='1'; claimBox.style.transform='translateY(0) scale(1)'; },250);
+    setTimeout(()=>{ hint.style.opacity='1'; hint.style.transform='translateY(0) scale(1)'; },400);
+}
+
+// ===== Init =====
+renderSaldo();
+initAnimations();
+</script>
+
+</body>
+</html>
