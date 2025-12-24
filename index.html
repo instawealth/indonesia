@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insta Wealth - Indonesia</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body {
+    margin:0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+/* Overlay Card */
+.overlay-card {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    padding: 30px;
+    border-radius: 25px;
+    text-align:center;
+    color:white;
+    max-width: 300px;
+    width: 90%;
+    opacity:0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s forwards;
+}
+
+.overlay-card img {
+    width:60px;
+    margin-bottom:15px;
+}
+
+#continue-btn {
+    margin-top:20px;
+    padding:10px 25px;
+    border:none;
+    border-radius:12px;
+    font-weight:800;
+    cursor:pointer;
+    background:white;
+    color:#e4405f;
+    transition:0.3s;
+}
+#continue-btn:hover { transform: scale(1.05); }
+
+/* Loading Overlay */
+#loading-overlay {
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    z-index:2000;
+}
+
+/* Logo loading animasi */
+#loading-overlay img {
+    width:80px;
+    animation: spin 1.5s linear infinite;
+}
+
+/* Animasi fadeInUp */
+@keyframes fadeInUp {
+    from { opacity:0; transform: translateY(20px);}
+    to { opacity:1; transform: translateY(0);}
+}
+
+/* Animasi spin */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<!-- Overlay Selamat Datang -->
+<div id="welcome-overlay" style="position:fixed; inset:0; display:flex; justify-content:center; align-items:center; z-index:2000;">
+    <div class="overlay-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Logo Instagram">
+        <h2>Insta Wealth! Indonesia</h2>
+        <p>Mulai perjalanan investasimu sekarang dan raih keuntungan maksimal dengan strategi yang tepat!</p>
+<button id="continue-btn" 
+        style="margin-top:20px; padding:10px 25px; border:none; border-radius:12px; 
+               font-weight:800; font-family:'Poppins', sans-serif; cursor:pointer; 
+               background:white; color:#e4405f;">
+    Lanjutkan
+</button>
+    </div>
+</div>
+
+<!-- Loading -->
+<!-- Loading -->
+<div id="loading-overlay">
+    <div style="text-align:center;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Loading Logo Instagram">
+        <p style="margin-top:15px; font-size:16px; font-weight:700; color:white;">Memuat...</p>
+    </div>
+</div>
+
+<script>
+document.getElementById("continue-btn").addEventListener("click", function(){
+    // sembunyikan overlay
+    document.getElementById("welcome-overlay").style.display = "none";
+
+    // tampilkan loading
+    const loading = document.getElementById("loading-overlay");
+    loading.style.display = "flex";
+
+    // redirect ke halaman pendaftaran setelah 2 detik
+    setTimeout(function(){
+        window.location.href = "daftar-masuk.html"; // ganti sesuai halaman pendaftaran
+    }, 2000);
+});
+</script>
+
+</body>
+</html>
