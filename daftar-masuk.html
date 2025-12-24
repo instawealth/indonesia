@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Daftar-masuk - Insta-Wealth</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --ig-gradient:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+    background:#fff;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    overflow:hidden
+}
+
+/* BINTANG */
+.stars-container{position:absolute;inset:0}
+.star{
+    position:absolute;
+    background:var(--ig-gradient);
+    border-radius:50%;
+    opacity:.3;
+    animation:float 5s infinite ease-in-out
+}
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-20px)}
+}
+
+/* CARD */
+.auth-card{
+    width:100%;
+    max-width:400px;
+    background:var(--ig-gradient);
+    border-radius:40px;
+    padding:35px 25px;
+    color:#fff;
+    z-index:2;
+    box-shadow:0 20px 40px rgba(220,39,67,.3)
+}
+
+.logo-wrapper{
+    width:70px;height:70px;
+    background:rgba(255,255,255,.2);
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px
+}
+.logo-wrapper i{font-size:38px}
+
+.title{text-align:center;font-size:20px;font-weight:700;margin-bottom:20px}
+
+/* TAB */
+.nav-box{
+    background:rgba(255,255,255,.15);
+    border-radius:30px;
+    display:flex;
+    height:50px;
+    padding:4px;
+    position:relative;
+    margin-bottom:20px
+}
+.nav-btn{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    color:rgba(255,255,255,.7);
+    z-index:2
+}
+.nav-btn.active{color:#333}
+.nav-slider{
+    position:absolute;
+    background:#fff;
+    border-radius:30px;
+    width:calc(50% - 4px);
+    height:calc(100% - 8px);
+    left:4px;
+    transition:.4s
+}
+
+/* FORM */
+.input-group{margin-bottom:10px}
+.label{font-size:12px;margin-left:12px;margin-bottom:4px;display:block}
+
+.input-box{
+    width:100%;
+    height:48px;
+    border-radius:30px;
+    border:none;
+    padding:0 20px;
+    outline:none;
+    font-size:13px
+}
+.input-box::placeholder{color:#bbb}
+
+.btn-submit{
+    width:100%;
+    height:55px;
+    background:#fff;
+    border:none;
+    border-radius:30px;
+    margin-top:15px;
+    font-weight:700;
+    color:#dc2743;
+    cursor:pointer
+}
+
+.footer-link{text-align:center;margin-top:20px;font-size:12px}
+.footer-link span{font-weight:700;cursor:pointer;text-decoration:underline}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="stars-container" id="stars"></div>
+
+<div class="auth-card">
+    <div class="logo-wrapper"><i class="fab fa-instagram"></i></div>
+    <h2 class="title" id="headerTitle">Buat Akun Baru</h2>
+
+    <div class="nav-box">
+        <div id="navSlider" class="nav-slider" style="left:calc(50% + 0px)"></div>
+        <div class="nav-btn" id="btnMasuk" onclick="switchAuth('login')">Masuk</div>
+        <div class="nav-btn active" id="btnDaftar" onclick="switchAuth('register')">Daftar</div>
+    </div>
+
+    <!-- DAFTAR -->
+    <div id="formRegister">
+        <div class="input-group">
+            <label class="label">Nama Lengkap</label>
+            <input id="regNama" class="input-box" placeholder="Nama lengkap">
+        </div>
+        <div class="input-group">
+            <label class="label">Nomor Telepon</label>
+            <input id="regHp" class="input-box" placeholder="08xxxxxxxxxx">
+        </div>
+        <div class="input-group">
+            <label class="label">Kata Sandi</label>
+            <input id="regPass" type="password" class="input-box" placeholder="Minimal 6 karakter">
+        </div>
+        <button class="btn-submit" onclick="daftar()">Daftar Sekarang</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="formLogin" class="hidden">
+        <div class="input-group">
+            <label class="label">Nomor Telepon</label>
+            <input id="loginHp" class="input-box" placeholder="Nomor telepon">
+        </div>
+        <div class="input-group">
+            <label class="label">Kata Sandi</label>
+            <input id="loginPass" type="password" class="input-box" placeholder="Kata sandi">
+        </div>
+        <button class="btn-submit" onclick="login()">Masuk Sekarang</button>
+    </div>
+
+    <p class="footer-link" id="footerText">
+        Sudah punya akun? <span onclick="switchAuth('login')">Masuk</span>
+    </p>
+</div>
+
+<script>
+function daftar() {
+    const nama = regNama.value.trim();
+    const hp   = regHp.value.trim();
+    const pass = regPass.value.trim();
+
+    if (!nama || !hp || pass.length < 6) {
+        alert("Data tidak valid");
+        return;
+    }
+
+    let users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+
+    if (users.some(u => u.hp === hp)) {
+        alert("Nomor sudah terdaftar");
+        return;
+    }
+
+    /* === BONUS PENDAFTARAN === */
+    const bonusTransaksi = {
+        id: "TRX-" + Date.now(),
+        jenis: "kas",
+        keterangan: "Bonus Pendaftaran",
+        jumlah: 51000,
+        status: "Berhasil",
+        tanggal: new Date().toLocaleString("id-ID")
+    };
+
+    /* === USER BARU === */
+    const newUser = {
+    id: "IW-" + Date.now(),
+    nama,
+    hp,
+    password: pass,
+    saldo: {
+        deposit: 50000,
+        penarikan: 1000
+    },
+    produkAktif: [],
+    produkSelesai: [],
+    bonusClaimed: [],
+    bonus: {
+        total: 1000,
+        kodeDipakai: []
+    },
+    bank: {
+    namaBank: "",
+    noRekening: "",
+    namaPemilik: ""
+},
+    checkin: {
+        hariKe: 0,
+        terakhir: 0
+    },
+    transaksi: [bonusTransaksi]
+};
+
+    users.push(newUser);
+
+    const index = users.length - 1;
+
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+    localStorage.setItem("APP_LOGIN_INDEX", index);
+    localStorage.setItem("APP_LOGIN", "true");
+
+    location.href = "beranda.html";
+}
+</script>
+<script>
+function login() {
+    const hp   = loginHp.value.trim();
+    const pass = loginPass.value.trim();
+
+    let users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+
+    const index = users.findIndex(
+        u => u.hp === hp && u.password === pass
+    );
+
+    if (index === -1) {
+        alert("Nomor atau password salah");
+        return;
+    }
+
+    localStorage.setItem("APP_LOGIN_INDEX", index);
+    localStorage.setItem("APP_LOGIN", "true");
+
+    location.href = "beranda.html";
+}
+</script>
+<script>
+function switchAuth(type){
+    const loginForm  = document.getElementById("formLogin");
+    const regForm    = document.getElementById("formRegister");
+    const btnLogin   = document.getElementById("btnMasuk");
+    const btnDaftar  = document.getElementById("btnDaftar");
+    const slider     = document.getElementById("navSlider");
+    const title      = document.getElementById("headerTitle");
+    const footer     = document.getElementById("footerText");
+
+    if(type === "login"){
+        loginForm.classList.remove("hidden");
+        regForm.classList.add("hidden");
+
+        btnLogin.classList.add("active");
+        btnDaftar.classList.remove("active");
+
+        slider.style.left = "4px";
+        title.innerText = "Masuk ke Akun";
+        footer.innerHTML = `Belum punya akun? <span onclick="switchAuth('register')">Daftar</span>`;
+    }else{
+        regForm.classList.remove("hidden");
+        loginForm.classList.add("hidden");
+
+        btnDaftar.classList.add("active");
+        btnLogin.classList.remove("active");
+
+        slider.style.left = "calc(50% + 0px)";
+        title.innerText = "Buat Akun Baru";
+        footer.innerHTML = `Sudah punya akun? <span onclick="switchAuth('login')">Masuk</span>`;
+    }
+}
+</script>
+
+</body>
+</html>

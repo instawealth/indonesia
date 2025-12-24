@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Isi Ulang - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #f09433;
+            --white: #ffffff;
+            --bg-body: #f4f7f8;
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        /* --- Animasi Fade Up --- */
+        @keyframes smoothUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            opacity: 0;
+            animation: smoothUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            text-decoration: none;
+        }
+
+        body { background-color: var(--bg-body); display: flex; justify-content: center; overflow-x: hidden; color: #333; }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 40px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #f0f0f0;
+        }
+        .back-box {
+            width: 38px; height: 38px; background: #ffffff; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1.5px solid #ebebeb; box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            cursor: pointer; transition: 0.2s;
+        }
+        .back-box:active { transform: scale(0.9); }
+        .back-box i { font-size: 14px; color: #333; }
+        .header-title {
+            flex: 1; text-align: center; font-weight: 700; font-size: 17px;
+            background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .spacer { width: 38px; }
+
+        .content-padding { padding: 0 16px; }
+
+        /* --- Wallet Card --- */
+        .wallet-card {
+            background: #1a1a1a; border-radius: 20px; padding: 20px;
+            text-align: center; margin-top: 15px; color: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .wallet-card i {
+            font-size: 18px; color: #fff; background: var(--ig-gradient);
+            width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 12px; margin-bottom: 10px;
+        }
+        .wallet-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 2px; }
+        .wallet-card p { font-size: 11px; opacity: 0.6; font-weight: 500; }
+
+        /* --- Form --- */
+        .section-label {
+            font-weight: 600; font-size: 14px; margin: 20px 0 10px 0;
+            display: flex; align-items: center; gap: 8px; color: #444;
+        }
+
+        .input-box {
+            background: #f8f9fa; border: 1.5px solid #eee; border-radius: 15px;
+            padding: 14px 18px; display: flex; align-items: center;
+        }
+        .input-box input {
+            border: none; background: transparent; font-size: 16px; font-weight: 600;
+            color: #333; width: 100%; outline: none;
+        }
+        .input-box span { font-weight: 700; color: var(--primary-orange); margin-right: 10px; }
+
+        /* --- Nominal Grid --- */
+        .nominal-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px;
+        }
+        .nominal-btn {
+            padding: 14px 5px; border-radius: 12px; border: none; color: white;
+            font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .nominal-btn:active { transform: scale(0.95); }
+
+        .btn-1 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .btn-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .btn-3 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .btn-4 { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .btn-5 { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .btn-6 { background: var(--ig-gradient); }
+
+        /* --- Payment Method --- */
+        .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .payment-item {
+            background: #fff; border: 1.5px solid #eee; border-radius: 15px;
+            padding: 16px; display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; transition: 0.2s;
+        }
+        .payment-item.active { border-color: var(--primary-orange); background: #fff9f4; }
+        
+        .pay-icon {
+            width: 38px; height: 38px; border-radius: 10px; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; color: white;
+        }
+        .pay-trc { background: #333; }
+        .pay-bep { background: var(--ig-gradient); }
+        .payment-item span { font-size: 12px; font-weight: 600; color: #444; }
+
+        /* --- Footer Button --- */
+        .btn-deposit {
+            width: 100%; background: var(--ig-gradient); color: white;
+            border: none; padding: 16px; border-radius: 15px; 
+            font-size: 15px; font-weight: 500;
+            margin-top: 30px; cursor: pointer;
+            box-shadow: 0 6px 15px rgba(220, 39, 67, 0.2);
+            text-transform: capitalize; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <div class="back-box" onclick="window.history.back()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <span class="header-title">Isi Ulang</span>
+        <div class="spacer"></div>
+    </header>
+
+    <div class="content-padding">
+        <div class="wallet-card animate" style="animation-delay: 0.1s;">
+            <i class="fas fa-wallet"></i>
+            <h2>Rp 0</h2>
+            <p>Dompet Isi Ulang</p>
+        </div>
+
+        <div class="section-label animate" style="animation-delay: 0.2s;">
+            <i class="fas fa-coins"></i> Jumlah Isi Ulang
+        </div>
+        <div class="input-box animate" style="animation-delay: 0.3s;">
+            <span>Rp</span>
+            <input type="number" id="deposit-amount" placeholder="Masukkan jumlah">
+        </div>
+
+        <div class="nominal-grid animate" style="animation-delay: 0.4s;">
+            <button class="nominal-btn btn-1" onclick="setAmount(300000)">300.000</button>
+            <button class="nominal-btn btn-2" onclick="setAmount(500000)">500.000</button>
+            <button class="nominal-btn btn-3" onclick="setAmount(750000)">750.000</button>
+            <button class="nominal-btn btn-4" onclick="setAmount(1000000)">1.000.000</button>
+            <button class="nominal-btn btn-5" onclick="setAmount(1500000)">1.500.000</button>
+            <button class="nominal-btn btn-6" onclick="setAmount(2000000)">2.000.000</button>
+        </div>
+
+        <div class="section-label animate" style="animation-delay: 0.5s;">
+            <i class="fas fa-layer-group"></i> Saluran Isi Ulang
+        </div>
+        <div class="payment-grid animate" style="animation-delay: 0.6s;">
+            <div class="payment-item active" onclick="selectPayment(this)">
+                <div class="pay-icon pay-trc"><i class="fas fa-university"></i></div>
+                <span>Bank</span>
+            </div>
+            <div class="payment-item" onclick="selectPayment(this)">
+                <div class="pay-icon pay-bep"><i class="fas fa-qrcode"></i></div>
+                <span>Qris</span>
+            </div>
+        </div>
+
+        <button class="btn-deposit animate" style="animation-delay: 0.7s;" onclick="submitDeposit()">
+            Isi ulang sekarang
+        </button>
+    </div>
+</div>
+
+
+<script>
+/* ===== CEK LOGIN USER ===== */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = localStorage.getItem("APP_LOGIN_INDEX");
+
+if (index === null || !users[index]) {
+    localStorage.clear();
+    location.href = "daftar-masuk.html";
+}
+
+const user = users[index]; // Ambil user aktif dari profil
+
+/* ===== UTIL FORMAT RUPIAH ===== */
+function rupiah(angka) {
+    return "Rp " + angka.toLocaleString("id-ID");
+}
+
+/* ===== UPDATE DOMPET DEPOSIT ===== */
+function updateWalletDeposit() {
+    const walletEl = document.querySelector('.wallet-card h2');
+    if(walletEl) walletEl.innerText = rupiah(user.saldo.deposit);
+}
+
+// Jalankan update saat halaman load
+updateWalletDeposit();
+
+/* ===== TOMBOL NOMINAL PRESET ===== */
+function setAmount(val) {
+    document.getElementById('deposit-amount').value = val;
+}
+
+/* ===== PILIH METODE PEMBAYARAN ===== */
+function selectPayment(el) {
+    document.querySelectorAll('.payment-item').forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+}
+
+/* ===== PROSES DEPOSIT ===== */
+function submitDeposit() {
+    let amountInput = document.getElementById('deposit-amount').value;
+    let amount = parseInt(amountInput);
+
+    if (!amount || amount < 20000) {
+        alert("Minimal isi ulang adalah Rp 20.000");
+        return;
+    }
+
+    // Tambahkan ke saldo deposit user
+    user.saldo.deposit += amount;
+
+    // Simpan perubahan ke localStorage
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    // Update dompet deposit (live)
+    updateWalletDeposit();
+
+    // Catat transaksi
+    const transactions = user.transaksi || [];
+    transactions.unshift({
+        id: "TRX-" + Date.now(),
+        jenis: "deposit",
+        jumlah: amount,
+        status: "Berhasil",
+        tanggal: new Date().toLocaleString('id-ID')
+    });
+    user.transaksi = transactions;
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    alert("Deposit berhasil! Saldo sekarang: " + rupiah(user.saldo.deposit));
+
+    // Reset input
+    document.getElementById('deposit-amount').value = '';
+}
+
+/* ===== OPTIONAL: PANTAU PERUBAHAN SALDO DARI TAB LAIN ===== */
+window.addEventListener('storage', (e) => {
+    if (e.key === "APP_USERS") {
+        const updatedUsers = JSON.parse(e.newValue) || [];
+        if(updatedUsers[index]) {
+            user.saldo.deposit = updatedUsers[index].saldo.deposit;
+            updateWalletDeposit();
+        }
+    }
+});
+</script>
+<!-- OVERLAY KONFIRMASI BAYAR -->
+<div id="paymentOverlay" style="display:none; position:fixed; inset:0; background: rgba(0,0,0,0.5); z-index:10000; justify-content:center; align-items:center;">
+    <div id="overlayContent" style="background:#fff; border-radius:20px; padding:20px; width:90%; max-width:350px; text-align:center; position:relative; opacity:0; transform:translateY(20px); transition: all 0.3s ease;">
+        <h2 style="font-size:18px; font-weight:700; margin-bottom:10px;">Konfirmasi Pembayaran</h2>
+        <p style="font-size:12px; color:#555; margin-bottom:15px;">Silakan scan QRIS di bawah untuk membayar</p>
+        <div id="overlayPaymentMethod" style="width:200px; height:200px; margin:0 auto 15px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:50px; color:#333;">
+            <img id="overlayQrImage" src="" alt="QRIS" style="width:100%; height:100%; object-fit:contain; border-radius:12px;">
+        </div>
+        <div style="margin-bottom:5px;"><b>Nominal:</b> <span id="overlayAmount">Rp 0</span></div>
+        <div style="margin-bottom:5px;"><b>Waktu tersisa:</b> <span id="overlayTimer">10:00</span></div>
+        <div style="font-size:11px; color:#888; margin-bottom:15px;">Selesaikan pembayaran sebelum waktu habis</div>
+        <button onclick="confirmPayment()" style="padding:12px 20px; border:none; border-radius:12px; background: var(--ig-gradient); color:white; font-weight:600;">Saya Sudah Bayar</button>
+        <div onclick="closeOverlay()" style="position:absolute; top:10px; right:10px; cursor:pointer; font-size:16px; color:#999;">&times;</div>
+    </div>
+</div>
+
+<script>
+function submitDeposit() {
+    const amount = Number(document.getElementById('deposit-amount').value);
+    if (!amount || amount < 250000) {
+        alert("Minimal isi ulang adalah Rp 250.000");
+        return;
+    }
+
+    // Pilih metode pembayaran
+    const selectedPayment = document.querySelector('.payment-item.active span').innerText;
+
+    // Tampilkan overlay QRIS
+    showOverlay(amount, selectedPayment);
+
+    // Simpan transaksi baru ke user (status: menunggu verifikasi)
+    const now = new Date();
+    const transaksiBaru = {
+        id: "DEP-" + Date.now(),
+        jenis: "ulang",
+        keterangan: `Isi Ulang via ${selectedPayment}`,
+        jumlah: amount,
+        status: "Diproses",
+        tanggal: now.toLocaleString("id-ID"),
+        time: now.getTime()
+    };
+
+    user.transaksi.push(transaksiBaru);
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    // Reset input nominal
+    document.getElementById('deposit-amount').value = '';
+}
+
+// Fungsi overlay QRIS
+function showOverlay(amount, payment) {
+    const overlay = document.createElement("div");
+    overlay.id = "paymentOverlay";
+    overlay.style = `
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center;
+        z-index:10000; animation:fadeIn 0.3s ease forwards;
+    `;
+    overlay.innerHTML = `
+        <div style="background:#fff; border-radius:20px; padding:20px; width:90%; max-width:350px; text-align:center; animation:slideUp 0.3s ease forwards;">
+            <h2 style="margin-bottom:10px;">Scan QRIS</h2>
+            <img src="qr.jpg" alt="QRIS" style="width:80%; max-width:250px; margin-bottom:15px;"/>
+            <p style="font-size:14px; margin-bottom:5px;">Nominal: Rp ${amount.toLocaleString('id-ID')}</p>
+            <p style="font-size:12px; color:#555; margin-bottom:10px;">Pembayaran via: ${payment}</p>
+            <p style="font-size:12px; color:#555; margin-bottom:15px;">Selesaikan pembayaran dalam <span id="timer">10:00</span></p>
+            <button onclick="confirmPayment()" style="background:linear-gradient(135deg,#4facfe,#00f2fe); color:white; padding:12px 20px; border:none; border-radius:12px; font-weight:700;">Saya Sudah Bayar</button>
+            <button onclick="closeOverlay()" style="margin-top:10px; background:#ccc; color:#333; padding:8px 15px; border:none; border-radius:10px;">Batal</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Timer countdown 10 menit
+    let timeLeft = 10 * 60;
+    const timerEl = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+        const seconds = (timeLeft % 60).toString().padStart(2,'0');
+        timerEl.innerText = `${minutes}:${seconds}`;
+        timeLeft--;
+        if(timeLeft < 0) {
+            clearInterval(timerInterval);
+            alert("Waktu pembayaran telah habis!");
+            closeOverlay();
+        }
+    }, 1000);
+
+    overlay.dataset.timerInterval = timerInterval;
+}
+
+function closeOverlay() {
+    const overlay = document.getElementById("paymentOverlay");
+    if(overlay) {
+        clearInterval(overlay.dataset.timerInterval);
+        overlay.remove();
+    }
+}
+
+// Setelah klik "Saya Sudah Bayar"
+function confirmPayment(){
+    const content = document.querySelector("#paymentOverlay div");
+    content.innerHTML = `
+        <h2 style="font-size:18px; font-weight:700; margin-bottom:10px;">Tunggu</h2>
+        <p style="font-size:14px; color:#555; margin-bottom:15px;">Isi ulang Anda akan diverifikasi.</p>
+    `;
+    setTimeout(() => closeOverlay(), 3000);
+}
+</script>
+<style>
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUpContent {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+function showOverlay(amount, payment) {
+    const overlay = document.createElement("div");
+    overlay.id = "paymentOverlay";
+    overlay.style = `
+        position:fixed; top:0; left:0; width:100%; height:100%;
+        background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center;
+        z-index:10000; animation:fadeInOverlay 0.4s ease forwards;
+    `;
+    overlay.innerHTML = `
+        <div style="background:#fff; border-radius:20px; padding:20px; width:90%; max-width:350px; text-align:center;
+                    animation:slideUpContent 0.4s ease forwards;">
+            <h2 style="margin-bottom:10px;">Scan QRIS</h2>
+            <img src="qr99.jpg" alt="QRIS" style="width:80%; max-width:250px; margin-bottom:15px;"/>
+            <p style="font-size:14px; margin-bottom:5px;">Nominal: Rp ${amount.toLocaleString('id-ID')}</p>
+            <p style="font-size:12px; color:#555; margin-bottom:10px;">Pembayaran via: ${payment}</p>
+            <p style="font-size:12px; color:#555; margin-bottom:15px;">Selesaikan pembayaran dalam <span id="timer">10:00</span></p>
+            <button onclick="confirmPayment()" style="background:linear-gradient(135deg,#4facfe,#00f2fe); color:white; padding:12px 20px; border:none; border-radius:12px; font-weight:700;">Saya Sudah Bayar</button>
+            <button onclick="closeOverlay()" style="margin-top:10px; background:#ccc; color:#333; padding:8px 15px; border:none; border-radius:10px;">Batal</button>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    // Timer countdown 10 menit
+    let timeLeft = 10 * 60;
+    const timerEl = document.getElementById("timer");
+    const timerInterval = setInterval(() => {
+        const minutes = Math.floor(timeLeft / 60).toString().padStart(2,'0');
+        const seconds = (timeLeft % 60).toString().padStart(2,'0');
+        timerEl.innerText = `${minutes}:${seconds}`;
+        timeLeft--;
+        if(timeLeft < 0) {
+            clearInterval(timerInterval);
+            alert("Waktu pembayaran telah habis!");
+            closeOverlay();
+        }
+    }, 1000);
+
+    overlay.dataset.timerInterval = timerInterval;
+}
+</script>
+<script>
+function confirmPayment() {
+    const overlay = document.getElementById("paymentOverlay");
+    if (!overlay) return;
+
+    // Hentikan timer jika ada
+    const timerInterval = overlay.dataset.timerInterval;
+    if (timerInterval) clearInterval(timerInterval);
+
+    // Tutup overlay dengan animasi halus
+    overlay.style.opacity = 0;
+    setTimeout(() => overlay.remove(), 300);
+
+    // Tampilkan notifikasi ke user
+    alert("Tunggu, isi ulang Anda akan diverifikasi!");
+}
+</script>
+</body>
+</html>

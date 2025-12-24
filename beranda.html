@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Beranda - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary-orange: #f09433;
+            --text-active: #f09433;
+            --text-inactive: #999999;
+            --white: #ffffff;
+            --bg-body: #f4f7f8;
+            --fb-blue: #1877F2;
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --soft-grad: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%);
+            --tt-dark: #121212;
+            --wa-green: #25D366;
+            --sp-green: #1DB954;
+            --tg-blue: #0088cc;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            text-decoration: none;
+        }
+
+        body { background-color: var(--bg-body); display: flex; justify-content: center; overflow-x: hidden; }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 100px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            background: var(--white); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #f0f0f0;
+        }
+        .brand-name {
+            font-weight: 800; font-size: 22px; letter-spacing: -0.8px;
+            background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .content-padding { padding: 0 16px; }
+
+        /* --- Banner --- */
+        .promo-banner {
+            width: 100%; background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 20px; padding: 25px; margin-top: 15px; color: #000;
+            position: relative; overflow: hidden; box-shadow: 0 8px 15px rgba(255, 165, 0, 0.15);
+        }
+        .promo-banner h1 { font-size: 24px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; color: #000; }
+        .promo-banner p { font-size: 11px; font-weight: 700; opacity: 0.8; color: #000; }
+
+        /* --- Notification --- */
+        .notif-box {
+            margin: 15px 0; background: #fff9f2; border-radius: 12px; padding: 12px 15px;
+            display: flex; align-items: center; border: 1px solid #ffede0; font-size: 13px; color: #555;
+        }
+
+        /* --- Menu Grid --- */
+        .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px 10px; margin: 20px 0 30px 0; }
+        .menu-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .icon-square { width: 55px; height: 55px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: white; margin-bottom: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+        .menu-label { font-size: 11px; font-weight: 700; color: #555; }
+        
+        .c1 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .c2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .c3 { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .c4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .c5 { background: linear-gradient(135deg, #f6d365, #fda085); }
+        .c6 { background: linear-gradient(135deg, #2c3e50, #000000); }
+        .c7 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+        .c8 { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
+
+        /* --- Plan Cards --- */
+        .section-title { font-weight: 800; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; color: #333; }
+        .section-title::before { content: ''; width: 4px; height: 18px; background: var(--primary-orange); border-radius: 10px; }
+
+        .plan-card { border-radius: 20px; padding: 20px; margin-bottom: 15px; color: white; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        .plan-wa { background: var(--wa-green); }
+        .plan-tg { background: var(--tg-blue); }
+        .plan-fb { background: var(--fb-blue); }
+        .plan-ig { background: var(--ig-gradient); }
+        .plan-tt { background: var(--tt-dark); }
+        .plan-sp { background: var(--sp-green); }
+
+        .plan-body { display: flex; gap: 15px; align-items: center; margin-bottom: 18px; }
+        .plan-icon-wrapper { width: 65px; height: 65px; background: rgba(255,255,255,0.2); border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 30px; border: 1px solid rgba(255,255,255,0.3); }
+        .plan-info h4 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+        .plan-info p { font-size: 12px; opacity: 0.9; font-weight: 500; line-height: 1.5; }
+        .plan-info .total { font-weight: 700; background: rgba(0, 0, 0, 0.2); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-top: 5px; }
+
+        .plan-footer { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.08); margin: 0 -20px -20px -20px; padding: 12px 20px; border-radius: 0 0 20px 20px; }
+        
+        /* --- Button Action (Clean & Solid) --- */
+        .btn-action {
+            padding: 10px 20px; border-radius: 12px; font-size: 12px; font-weight: 800; border: none; cursor: pointer;
+            color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1); transition: all 0.3s ease;
+        }
+        .btn-action:active { transform: scale(0.95); }
+
+        .plan-wa .btn-action { background: #128C7E; }
+        .plan-tg .btn-action { background: #0077b5; }
+        .plan-fb .btn-action { background: #145dbf; }
+        .plan-ig .btn-action { background: #c13584; }
+        .plan-tt .btn-action { background: #333333; }
+        .plan-sp .btn-action { background: #169c46; }
+
+        /* ------------------------------------------- */
+        /* --- OVERLAY & ULTRA-SMOOTH POPUP SYSTEM --- */
+        /* ------------------------------------------- */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0); z-index: 3000;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(0px);
+            transition: background 0.6s ease, backdrop-filter 0.6s ease, visibility 0.6s ease;
+            visibility: hidden;
+        }
+        
+        .overlay.show { 
+            visibility: visible;
+            background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(8px);
+        }
+        
+        .modal-content {
+            width: 88%; max-width: 360px; 
+            background: linear-gradient(135deg, #ffffff 0%, #fff0f0 100%); /* Gradasi Cantik */
+            border-radius: 35px; padding: 45px 25px 35px 25px; position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            
+            /* State Awal Animasi */
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .overlay.show .modal-content { 
+            opacity: 1; 
+            transform: translateY(0) scale(1);
+        }
+
+        /* Tombol Close X Pojok Kanan Atas */
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            width: 35px; height: 35px; background: rgba(0,0,0,0.05);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #666; font-size: 16px; cursor: pointer; transition: 0.3s;
+        }
+        .close-btn:active { transform: scale(0.85); background: rgba(0,0,0,0.1); }
+
+        /* Rent Modal Specific (Bottom Sheet Style) */
+        #modalOverlay.overlay { align-items: flex-end; }
+        .rent-modal { 
+            border-radius: 35px 35px 0 0; width: 100%; max-width: 414px; 
+            transform: translateY(100%);
+        }
+        #modalOverlay.show .rent-modal { transform: translateY(0); }
+
+        .welcome-header { text-align: center; }
+        .welcome-icon { 
+            width: 85px; height: 85px; background: var(--ig-gradient); border-radius: 28px; 
+            display: flex; align-items: center; justify-content: center; font-size: 40px; color: white; 
+            margin: 0 auto 20px auto; box-shadow: 0 10px 20px rgba(240, 148, 51, 0.3); 
+        }
+        .welcome-title { font-size: 22px; font-weight: 800; color: #222; margin-bottom: 12px; }
+        .welcome-text { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 30px; text-align: center; }
+
+        .btn-confirm, .btn-welcome { 
+            width: 100%; background: var(--ig-gradient); color: #fff; padding: 18px; 
+            border-radius: 20px; border: none; font-weight: 800; font-size: 16px; cursor: pointer; 
+            transition: transform 0.2s ease; box-shadow: 0 10px 20px rgba(240, 148, 51, 0.2);
+        }
+        .btn-confirm:active, .btn-welcome:active { transform: scale(0.97); }
+        .btn-cancel { flex: 1; background: #f1f1f1; color: #666; padding: 15px; border-radius: 18px; border: none; font-weight: 700; cursor: pointer; }
+
+        /* --- Navbar --- */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; height: 75px; background: #fff; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #f0f0f0; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-inactive); flex: 1; }
+        .nav-item.active { color: var(--text-active); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        .nav-item span { font-size: 10px; font-weight: 700; }
+
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .detail-box { background: rgba(255,255,255,0.5); border: 1px solid #eee; padding: 15px; border-radius: 18px; text-align: center; }
+        .detail-box span { font-size: 10px; color: #888; display: block; margin-bottom: 5px; text-transform: uppercase; font-weight: 700; }
+        .detail-box b { font-size: 14px; color: #333; font-weight: 800; }
+/* Overlay Sukses / Error */
+/* Overlay Sukses / Error */
+.purchase-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0); display: flex; justify-content: center; align-items: center;
+    visibility: hidden; opacity: 0; transition: all 0.5s ease;
+    z-index: 4000;
+}
+
+.purchase-overlay.show {
+    visibility: visible;
+    opacity: 1;
+    background: rgba(0,0,0,0.6);
+}
+
+.purchase-box {
+    max-width: 360px; /* Maksimal lebar box */
+    width: 88%;       /* Sesuai dengan overlay bonus sebelumnya */
+    padding: 30px 25px;
+    border-radius: 28px;
+    background: var(--ig-gradient);
+    color: #fff;
+    text-align: center;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+/* Confetti */
+.confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 4500;
+}
+    </style>
+</head>
+<body>
+
+<div id="welcomePopup" class="overlay">
+    <div class="modal-content">
+        <div class="close-btn" onclick="closeWelcome()"><i class="fas fa-times"></i></div>
+        <div class="welcome-header">
+            <div class="welcome-icon"><i class="fas fa-rocket"></i></div>
+            <h2 class="welcome-title">Selamat Datang!</h2>
+            <p class="welcome-text">
+                Wujudkan impian finansial Anda bersama <b>Insta Wealth</b>. Platform aman, terpercaya, dan profit harian otomatis.
+            </p>
+            <button class="btn-welcome" onclick="closeWelcome()">Mulai Investasi Sekarang</button>
+        </div>
+    </div>
+</div>
+
+<div class="app-container">
+    <header class="header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="28">
+            <span class="brand-name">Insta Wealth</span>
+        </div>
+        <i class="far fa-bell" style="font-size: 20px; color: #333;"></i>
+    </header>
+
+    <div class="content-padding">
+        <div class="promo-banner">
+            <p>KEPUTUSAN ADA DI TANGAN ANDA</p>
+            <h1>Masa Depan Finansial Dimulai Hari Ini.</h1>
+            <div style="background: #fff; display: inline-block; padding: 5px 15px; border-radius: 50px; font-size: 11px; font-weight: 800; margin-top: 10px;">Mulai Sekarang</div>
+        </div>
+
+        <div class="notif-box">
+            <i class="fas fa-volume-up" style="margin-right: 12px; color: var(--primary-orange);"></i>
+            <marquee scrollamount="5">Selamat datang di <strong>Insta Wealth</strong> nikmati peluang investasi yang menguntungkan dan terpercaya | Bergabunglah bersama ribuan anggota yang telah merasakan kemudahan dan transparansi dalam berinvestasi | Kelola aset Anda dengan bijak dan raih pertumbuhan finansial berkelanjutan bersama <strong>Insta Wealth</strong></marquee>
+        </div>
+
+        <div class="menu-grid">
+            <a href="deposit.html" class="menu-item"><div class="icon-square c1"><i class="fas fa-wallet"></i></div><div class="menu-label">Isi Ulang</div></a>
+            <a href="about.html" class="menu-item"><div class="icon-square c2"><i class="fas fa-info-circle"></i></div><div class="menu-label">Tentang</div></a>
+            <a href="team.html" class="menu-item"><div class="icon-square c3"><i class="fas fa-users-cog"></i></div><div class="menu-label">Team</div></a>
+            <a href="penarikan.html" class="menu-item"><div class="icon-square c4"><i class="fas fa-money-bill-wave"></i></div><div class="menu-label">Tarik Saldo</div></a>
+            <a href="gift.html" class="menu-item"><div class="icon-square c5"><i class="fas fa-gift"></i></div><div class="menu-label">Bonus</div></a>
+            <a href="investasi-saya.html" class="menu-item"><div class="icon-square c6"><i class="fas fa-briefcase"></i></div><div class="menu-label">Investasi</div></a>
+            <a href="chek-in.html" class="menu-item"><div class="icon-square c7"><i class="fas fa-calendar-alt"></i></div><div class="menu-label">Cek-in</div></a>
+            <a href="support.html" class="menu-item"><div class="icon-square c8"><i class="fas fa-headset"></i></div><div class="menu-label">Layanan</div></a>
+        </div>
+
+        <div class="section-title">Produk Investasi Premium</div>
+<div class="plan-card plan-ig" data-newuser="true" id="produk-newuser">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-instagram"></i></div>
+                <div class="plan-info"><h4>Khusus Pengguna Baru</h4><p>Profit Harian: <b>Rp 140.000</b></p><p>Kontrak: <b>5 Hari</b></p><p class="total">Total: <b>Rp 700.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 300.000</b><button class="btn-action"
+data-nama="Khusus Pengguna Baru"
+data-harga="300000"
+data-kontrak="5"
+data-harian="140000"
+data-total="700000"
+data-theme="ig"
+data-icon="fa-instagram"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+            
+        </div>
+
+        <div class="plan-card plan-wa">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-whatsapp"></i></div>
+                <div class="plan-info"><h4>WhatsApp </h4><p>Profit Harian: <b>Rp 24.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 8.760.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 300.000</b><button class="btn-action"
+data-nama="WhatsApp"
+data-harga="300000"
+data-kontrak="365"
+data-harian="24000"
+data-total="8760000"
+data-theme="wa"
+data-icon="fa-whatsapp"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+
+        <div class="plan-card plan-tg">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-telegram-plane"></i></div>
+                <div class="plan-info"><h4>Telegram </h4><p>Profit Harian: <b>Rp 40.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 14.600.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 500.000</b><button class="btn-action"
+data-nama="Telegram"
+data-harga="500000"
+data-kontrak="365"
+data-harian="40000"
+data-total="14600000"
+data-theme="tg"
+data-icon="fa-telegram-plane"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+
+        <div class="plan-card plan-fb">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-facebook-f"></i></div>
+                <div class="plan-info"><h4>Facebook</h4><p>Profit Harian: <b>Rp 60.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 21.900.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 750.000</b><button class="btn-action"
+data-nama="Facebook"
+data-harga="750000"
+data-kontrak="365"
+data-harian="60000"
+data-total="21900000"
+data-theme="fb"
+data-icon="fa-facebook-f"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+
+        <div class="plan-card plan-ig">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-instagram"></i></div>
+                <div class="plan-info"><h4>Instagram</h4><p>Profit Harian: <b>Rp 80.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 29.200.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 1.000.000</b><button class="btn-action"
+data-nama="Instagram"
+data-harga="1000000"
+data-kontrak="365"
+data-harian="80000"
+data-total="29200000"
+data-theme="ig"
+data-icon="fa-instagram"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+
+        <div class="plan-card plan-tt">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-tiktok"></i></div>
+                <div class="plan-info"><h4>TikTok </h4><p>Profit Harian: <b>Rp 120.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 43.800.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 1.500.000</b><button class="btn-action"
+data-nama="TikTok"
+data-harga="1500000"
+data-kontrak="365"
+data-harian="120000"
+data-total="43800000"
+data-theme="tt"
+data-icon="fa-tiktok"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+
+        <div class="plan-card plan-sp">
+            <div class="plan-body">
+                <div class="plan-icon-wrapper"><i class="fab fa-spotify"></i></div>
+                <div class="plan-info"><h4>Spotify</h4><p>Profit Harian: <b>Rp 160.000</b></p><p>Kontrak: <b>365 Hari</b></p><p class="total">Total: <b>Rp 58.400.000</b></p></div>
+            </div>
+            <div class="plan-footer"><b>Rp 2.000.000</b><button class="btn-action"
+data-nama="Spotify"
+data-harga="2000000"
+data-kontrak="365"
+data-harian="160000"
+data-total="58400000"
+data-theme="sp"
+data-icon="fa-spotify"
+onclick="openModal(this)">
+Sewa Sekarang
+</button></div>
+        </div>
+    </div>
+
+    <div id="modalOverlay" class="overlay">
+        <div class="modal-content rent-modal">
+            <div class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></div>
+            <div class="modal-header" style="margin-bottom: 25px;"><h2 id="modalTitle" style="text-align: center; color: #222;">Konfirmasi Sewa</h2></div>
+            <div class="detail-grid">
+                <div class="detail-box"><span>Harga Sewa</span><b id="modalPrice">Rp 0</b></div>
+                <div class="detail-box"><span>Kontrak</span><b id="modalCycle">0 Hari</b></div>
+                <div class="detail-box"><span>Harian</span><b id="modalDaily">Rp 0</b></div>
+                <div class="detail-box"><span>Total</span><b id="modalTotal">Rp 0</b></div>
+            </div>
+            <div class="modal-footer" style="display:flex; gap:10px;">
+                <button class="btn-cancel" onclick="closeModal()">Batal</button>
+                <button class="btn-confirm" style="flex:2" onclick="confirmRent()">Sewa Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="beranda.html" class="nav-item active"><i class="fas fa-home"></i><span>Beranda</span></a>
+        <a href="investasi-saya.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Investasi</span></a>
+        <a href="team.html" class="nav-item"><i class="fas fa-users"></i><span>Team</span></a>
+        <a href="profil.html" class="nav-item"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+</div>
+
+<script>
+    // --- ANIMASI POPUP ULTRA-SMOOTH ---
+    window.onload = function() {
+        const welcome = document.getElementById('welcomePopup');
+        welcome.style.display = 'flex';
+        setTimeout(() => { welcome.classList.add('show'); }, 100);
+    };
+
+    function closeWelcome() {
+        const welcome = document.getElementById('welcomePopup');
+        welcome.classList.remove('show');
+        setTimeout(() => { welcome.style.display = 'none'; }, 700);
+    }
+
+    const overlay = document.getElementById('modalOverlay');
+    function openModal(btn) {
+    selectedProduct = {
+        id: "PRD-" + Date.now(),
+        nama: btn.dataset.nama,
+        harga: Number(btn.dataset.harga),
+        kontrak: Number(btn.dataset.kontrak),
+        harian: Number(btn.dataset.harian),
+        total: Number(btn.dataset.total),
+        theme: btn.dataset.theme,
+        icon: btn.dataset.icon,
+        hariKe: 1,
+        terakhirKlaim: 0,
+        status: "aktif",
+        tanggalBeli: new Date().toLocaleString("id-ID")
+    };
+
+    modalTitle.innerText = selectedProduct.nama;
+    modalPrice.innerText = rupiah(selectedProduct.harga);
+    modalCycle.innerText = selectedProduct.kontrak + " Hari";
+    modalDaily.innerText = rupiah(selectedProduct.harian);
+    modalTotal.innerText = rupiah(selectedProduct.total);
+
+    overlay.style.display = "flex";
+    setTimeout(() => overlay.classList.add("show"), 50);
+}
+
+    function closeModal() {
+        overlay.classList.remove('show');
+        setTimeout(() => { overlay.style.display = 'none'; }, 700);
+    }
+
+    function confirmRent() {
+        alert("Terima kasih! Investasi Anda sedang dalam tahap verifikasi.");
+        closeModal();
+    }
+
+    // Tutup jika klik area hitam (overlay)
+    window.onclick = function(e) {
+        if (e.target.classList.contains('overlay')) {
+            if (e.target.id === 'welcomePopup') closeWelcome();
+            else closeModal();
+        }
+    }
+</script>
+<script>
+/* ===============================
+   VALIDASI LOGIN
+================================ */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+let users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+let user = users[index];
+
+let selectedProduct = null;
+
+/* ===============================
+   BUKA MODAL + SIMPAN DATA PRODUK
+================================ */
+function openModal(btn) {
+    selectedProduct = {
+        id: "PRD-" + Date.now(),
+        nama: btn.dataset.nama,
+        harga: Number(btn.dataset.harga),
+        kontrak: Number(btn.dataset.kontrak),
+        harian: Number(btn.dataset.harian),
+        total: Number(btn.dataset.total),
+        theme: btn.dataset.theme,
+        icon: btn.dataset.icon,
+        hariKe: 1,
+        terakhirKlaim: 0,
+        status: "aktif",
+        tanggalBeli: new Date().toLocaleString("id-ID")
+    };
+
+    modalTitle.innerText = selectedProduct.nama;
+    modalPrice.innerText = "Rp " + selectedProduct.harga.toLocaleString("id-ID");
+    modalCycle.innerText = selectedProduct.kontrak + " Hari";
+    modalDaily.innerText = "Rp " + selectedProduct.harian.toLocaleString("id-ID");
+    modalTotal.innerText = "Rp " + selectedProduct.total.toLocaleString("id-ID");
+
+    overlay.style.display = "flex";
+    setTimeout(() => overlay.classList.add("show"), 50);
+}
+
+/* ===============================
+   KONFIRMASI SEWA (INTI LOGIKA)
+================================ */
+function confirmRent() {
+    if (!selectedProduct) return;
+
+    const harga = selectedProduct.harga;
+    const saldo = user.saldo.deposit;
+
+    // ❌ Saldo tidak cukup
+    if (saldo < harga) {
+        alert(
+          "Saldo deposit tidak cukup\n\n" +
+          "Saldo: Rp " + saldo.toLocaleString("id-ID") + "\n" +
+          "Harga: Rp " + harga.toLocaleString("id-ID")
+        );
+        return;
+    }
+
+    /* ✅ POTONG SALDO */
+    user.saldo.deposit -= harga;
+
+    /* ➕ TAMBAH PRODUK AKTIF */
+    user.produkAktif.unshift({
+    id: "PROD-" + Date.now() + "-" + Math.floor(Math.random() * 1000), // <-- unik
+    nama: selectedProduct.nama,
+    harga: selectedProduct.harga,
+    kontrak: selectedProduct.kontrak,
+    harian: selectedProduct.harian,
+    theme: selectedProduct.theme,
+    icon: selectedProduct.icon,
+    hariKe: 1,
+    terakhirKlaim: 0,
+    status: "aktif"
+});
+
+    /* 🧾 CATAT TRANSAKSI */
+    user.transaksi.unshift({
+    id: "TRX-" + Date.now(),
+    jenis: "kas",
+    keterangan: "Sewa " + selectedProduct.nama,
+    jumlah: -harga,
+    status: "Berhasil",
+    tanggal: new Date().toLocaleString("id-ID"),
+    excludeFromTotal: true 
+});
+
+    /* 🔒 KHUSUS PRODUK USER BARU (INI POSISINYA) */
+    if (selectedProduct.nama === "Khusus Pengguna Baru") {
+        user.usedNewUserProduct = true;
+    }
+
+    /* 💾 SIMPAN KE STORAGE */
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    alert("Produk berhasil dibeli 🎉");
+    closeModal();
+}
+</script>
+<script>
+function beliProduk(nama, harga, harian, kontrak) {
+
+    // Ambil user login
+    const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+    const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+    const user  = users[index];
+
+    if (!user) {
+        alert("Silakan login dulu");
+        location.href = "login.html";
+        return;
+    }
+
+    // Cek saldo deposit
+    if (user.saldo.deposit < harga) {
+        alert("Saldo deposit tidak cukup");
+        return;
+    }
+
+    // Kurangi saldo
+    user.saldo.deposit -= harga;
+
+    // SIMPAN PRODUK AKTIF KE USER INI
+    user.produkAktif.unshift({
+    id: "PROD-" + Date.now() + "-" + Math.floor(Math.random() * 1000), // <-- unik
+    nama: selectedProduct.nama,
+    harga: selectedProduct.harga,
+    kontrak: selectedProduct.kontrak,
+    harian: selectedProduct.harian,
+    theme: selectedProduct.theme,
+    icon: selectedProduct.icon,
+    hariKe: 1,
+    terakhirKlaim: 0,
+    status: "aktif"
+});
+
+    // Simpan transaksi
+    user.transaksi.unshift({
+        id: "TRX-" + Date.now(),
+        jenis: "sewa",
+        keterangan: "Sewa " + nama,
+        jumlah: harga,
+        status: "Berhasil",
+        tanggal: new Date().toLocaleString("id-ID")
+    });
+
+    // SIMPAN KEMBALI
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    alert("Produk berhasil dibeli");
+}
+</script>
+<script>
+(function(){
+
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+const user  = users[index];
+if(!user) return;
+
+// default
+user.usedNewUserProduct = user.usedNewUserProduct || false;
+
+const newUserCard = document.getElementById("produk-newuser");
+if (!newUserCard) return;
+
+const btn = newUserCard.querySelector(".btn-action");
+
+if (user.usedNewUserProduct) {
+    // BEKU TOTAL
+    btn.innerText = "Sudah Digunakan";
+    btn.disabled = true;
+    btn.style.opacity = "0.6";
+    btn.style.background = "#999";
+    btn.style.cursor = "not-allowed";
+
+    // Tambah detail info
+    const info = document.createElement("div");
+    info.style.marginTop = "10px";
+    info.style.fontSize = "11px";
+    info.style.fontWeight = "700";
+    info.style.background = "rgba(0,0,0,0.25)";
+    info.style.padding = "6px 10px";
+    info.style.borderRadius = "10px";
+    info.innerText = "LIMIT 1x • KHUSUS PENGGUNA BARU";
+
+    newUserCard.querySelector(".plan-info").appendChild(info);
+}
+
+// simpan jika properti baru ditambahkan
+users[index] = user;
+localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+})();
+</script>
+<script>
+(function () {
+    const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+    const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+    const user  = users[index];
+    if (!user) return;
+
+    const card = document.getElementById("produk-newuser");
+    if (!card) return;
+
+    if (user.usedNewUserProduct) {
+
+        // ❄️ BEKU CARD
+        card.style.pointerEvents = "none";
+        card.style.opacity = "0.75";
+        card.style.filter = "grayscale(100%)";
+
+        // 🔴 OVERLAY SOLD OUT
+        const sold = document.createElement("div");
+        sold.innerText = "SOLD OUT";
+        sold.style.position = "absolute";
+        sold.style.top = "0";
+        sold.style.left = "0";
+        sold.style.right = "0";
+        sold.style.bottom = "0";
+        sold.style.display = "flex";
+        sold.style.alignItems = "center";
+        sold.style.justifyContent = "center";
+        sold.style.fontSize = "28px";
+        sold.style.fontWeight = "900";
+        sold.style.letterSpacing = "3px";
+        sold.style.color = "#fff";
+        sold.style.background = "rgba(0,0,0,0.6)";
+        sold.style.borderRadius = "20px";
+        sold.style.zIndex = "50";
+
+        card.style.position = "relative";
+        card.appendChild(sold);
+    }
+})();
+
+</script>
+<script>
+  function showPurchaseOverlay(message, success = true, redirectUrl = null) {
+    const overlay = document.getElementById('purchaseOverlay');
+    const box = document.getElementById('purchaseBox');
+    box.innerText = message;
+    overlay.classList.add('show');
+
+    if(success){
+        launchConfetti(box);
+    }
+
+    // auto-hide overlay setelah 2.2 detik
+    setTimeout(() => {
+        overlay.classList.remove('show');
+        if(redirectUrl) location.href = redirectUrl;
+    }, 2200);
+}
+
+function launchConfetti(container) {
+    const count = 80;
+    for(let i=0;i<count;i++){
+        const c = document.createElement('div');
+        c.classList.add('confetti-piece');
+        c.style.backgroundColor = `hsl(${Math.random()*360},80%,60%)`;
+        container.appendChild(c);
+
+        // Random posisi awal (dari tengah atas box)
+        c.style.left = `${50 + (Math.random()-0.5)*50}%`;
+        c.style.top = `0%`;
+        const angle = (Math.random() * Math.PI - Math.PI/2); // arah ke atas
+        const velocity = Math.random() * 6 + 4;
+
+        const fall = setInterval(() => {
+            const top = parseFloat(c.style.top);
+            const left = parseFloat(c.style.left);
+            c.style.top = top + velocity * Math.sin(angle) + "%";
+            c.style.left = left + velocity * Math.cos(angle) + "%";
+            c.style.opacity = parseFloat(c.style.opacity) - 0.02;
+            if(parseFloat(c.style.opacity) <= 0){
+                clearInterval(fall);
+                c.remove();
+            }
+        }, 20);
+    }
+}
+
+// --- Ubah confirmRent ---
+function confirmRent() {
+    if (!selectedProduct) return;
+
+    const harga = selectedProduct.harga;
+    const saldo = user.saldo.deposit;
+
+    if (saldo < harga) {
+        showPurchaseOverlay(
+            `Saldo deposit tidak cukup!\nSaldo: Rp ${saldo.toLocaleString("id-ID")}\nHarga: Rp ${harga.toLocaleString("id-ID")}`, 
+            false
+        );
+        return;
+    }
+
+    // Kurangi saldo
+    user.saldo.deposit -= harga;
+
+    // Tambah produk aktif
+    user.produkAktif.unshift({
+        id: "PROD-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+        nama: selectedProduct.nama,
+        harga: selectedProduct.harga,
+        kontrak: selectedProduct.kontrak,
+        harian: selectedProduct.harian,
+        theme: selectedProduct.theme,
+        icon: selectedProduct.icon,
+        hariKe: 1,
+        terakhirKlaim: 0,
+        status: "aktif"
+    });
+
+    // Catat transaksi
+    user.transaksi.unshift({
+        id: "TRX-" + Date.now(),
+        jenis: "kas",
+        keterangan: "Sewa " + selectedProduct.nama,
+        jumlah: -harga,
+        status: "Berhasil",
+        tanggal: new Date().toLocaleString("id-ID"),
+        excludeFromTotal: true 
+    });
+
+    // Khusus produk user baru
+    if (selectedProduct.nama === "Khusus Pengguna Baru") user.usedNewUserProduct = true;
+
+    // Simpan ke storage
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    // Overlay sukses + confetti, redirect ke investasi
+    showPurchaseOverlay(`Produk ${selectedProduct.nama} berhasil dibeli `, true, 'investasi-saya.html');
+
+    closeModal();
+}
+</script>
+<div id="purchaseOverlay" class="purchase-overlay">
+    <div class="purchase-box" id="purchaseBox">Pesan</div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Penarikan - Insta-Wealth</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary: #f09433;
+    --bg: #f4f7f8;
+    --dark: #1a1a1a;
+    --grad: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+}
+
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body {
+    background:var(--bg);
+    display:flex;
+    justify-content:center;
+}
+
+.app-container {
+    width:100%;
+    max-width:414px;
+    min-height:100vh;
+    background:#fff;
+}
+
+/* HEADER */
+.header {
+    display:flex;
+    align-items:center;
+    padding:15px;
+    border-bottom:1px solid #eee;
+}
+
+.back-box {
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    border:1px solid #eee;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.header-title {
+    flex:1;
+    text-align:center;
+    font-weight:700;
+    background:var(--grad);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* CONTENT */
+.content {
+    padding:20px;
+}
+
+/* WALLET */
+.wallet-card {
+    background:var(--dark);
+    color:#fff;
+    border-radius:24px;
+    padding:25px;
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.wallet-card i {
+    background:var(--grad);
+    width:42px;
+    height:42px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:14px;
+    margin-bottom:10px;
+}
+
+.wallet-card h2 {
+    color:var(--primary);
+    font-size:26px;
+}
+
+.wallet-card p {
+    font-size:12px;
+    opacity:.7;
+}
+
+/* INFO */
+.info-display {
+    background:#262626;
+    border-radius:16px;
+    padding:16px;
+    color:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.info-label {
+    display:flex;
+    gap:10px;
+    align-items:center;
+    font-size:14px;
+}
+
+.info-label i {
+    color:var(--primary);
+}
+
+.info-value {
+    font-weight:600;
+}
+
+/* INPUT */
+.section-label {
+    margin:25px 0 10px;
+    font-weight:600;
+}
+
+.input-box {
+    display:flex;
+    align-items:center;
+    background:#f8f9fa;
+    border:1px solid #eee;
+    border-radius:15px;
+    padding:16px;
+}
+
+.input-box span {
+    color:var(--primary);
+    font-weight:700;
+    margin-right:8px;
+}
+
+.input-box input {
+    border:none;
+    background:transparent;
+    width:100%;
+    font-size:16px;
+    font-weight:600;
+    outline:none;
+}
+
+/* BUTTON */
+.btn-withdraw {
+    width:100%;
+    margin-top:30px;
+    padding:18px;
+    border:none;
+    border-radius:18px;
+    background:var(--grad);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="app-container">
+
+    <div class="header">
+        <div class="back-box" onclick="history.back()">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="header-title">Penarikan</div>
+        <div style="width:38px"></div>
+    </div>
+
+    <div class="content">
+
+        <div class="wallet-card">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h2 id="saldoPenarikan">Rp 0</h2>
+            <p>Dompet Penarikan</p>
+        </div>
+
+        <div class="info-display">
+            <div class="info-label">
+                <i class="fas fa-credit-card"></i> Nomor Rekening
+            </div>
+            <div class="info-value" id="noRek">-</div>
+        </div>
+
+        <div class="info-display">
+            <div class="info-label">
+                <i class="fas fa-university"></i> Nama Bank
+            </div>
+            <div class="info-value" id="namaBank">-</div>
+        </div>
+
+        <div class="section-label">
+Jumlah Penarikan
+        </div>
+
+        <div class="input-box">
+            <span>Rp</span>
+            <input type="number" id="withdrawAmount" placeholder="Minimal 50.000">
+        </div>
+
+        <button class="btn-withdraw" onclick="processWithdraw()">
+            Penarikan sekarang
+        </button>
+
+    </div>
+</div>
+
+<script>
+/* ===== LOGIN CHECK ===== */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+const user = users[index];
+
+if (!user) {
+    localStorage.clear();
+    location.href = "daftar-masuk.html";
+}
+
+/* ===== BANK CHECK ===== */
+if (!user.bank || !user.bank.noRekening) {
+    alert("Silakan ikat akun bank terlebih dahulu");
+    location.href = "bank-info.html";
+}
+
+/* ===== DISPLAY DATA ===== */
+function rupiah(n){
+    return "Rp " + Number(n).toLocaleString("id-ID");
+}
+
+document.getElementById("saldoPenarikan").innerText = rupiah(user.saldo.penarikan);
+document.getElementById("noRek").innerText = user.bank.noRekening;
+document.getElementById("namaBank").innerText = user.bank.namaBank;
+
+/* ===== PROCESS WITHDRAW ===== */
+function processWithdraw(){
+    const amount = Number(document.getElementById("withdrawAmount").value);
+
+    if (!amount || amount < 50000) {
+        alert("Minimal penarikan Rp 50.000");
+        return;
+    }
+
+    if (amount > user.saldo.penarikan) {
+        alert("Saldo penarikan tidak mencukupi");
+        return;
+    }
+
+    user.saldo.penarikan -= amount;
+
+    user.transaksi.unshift({
+        id: "TRX-" + Date.now(),
+        jenis: "tarik",
+        keterangan: "Penarikan Dana",
+        jumlah: -amount,
+        status: "Diproses",
+        tanggal: new Date().toLocaleString("id-ID"),
+        time: Date.now()
+    });
+
+    users[index] = user;
+    localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+    alert("Penarikan berhasil diajukan");
+    location.reload();
+}
+</script>
+
+</body>
+</html>

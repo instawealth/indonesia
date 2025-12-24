@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transaksi - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --white: #ffffff;
+            --grad-kas: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --grad-ulang: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --grad-tarik: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f4f7f8; display: flex; justify-content: center; }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 30px;
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #f2f2f2;
+        }
+        .back-btn { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #efefef; cursor: pointer; }
+        .header-title { flex: 1; text-align: center; font-weight: 700; font-size: 17px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- Tab Navigation --- */
+        .tab-container { display: flex; gap: 10px; padding: 20px; }
+        .tab-item {
+            flex: 1; padding: 15px 10px; border-radius: 20px; text-align: center; cursor: pointer; 
+            transition: 0.3s; color: white; opacity: 0.4; transform: scale(0.95);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .tab-kas { background: var(--grad-kas); }
+        .tab-ulang { background: var(--grad-ulang); }
+        .tab-tarik { background: var(--grad-tarik); }
+        .tab-item.active { opacity: 1; transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .tab-item i { display: block; font-size: 20px; margin-bottom: 5px; }
+        .tab-item span { font-size: 11px; font-weight: 700; }
+
+        /* --- History List --- */
+        .history-list { padding: 0 20px; }
+        .history-card {
+            border-radius: 22px; padding: 20px; margin-bottom: 15px; 
+            display: flex; justify-content: space-between; align-items: flex-start;
+            color: white; position: relative; min-height: 100px;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            animation: slideUp 0.4s ease-out forwards;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        .info-left h4 { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+        .info-left p { font-size: 11px; opacity: 0.85; }
+
+        /* --- Right Info & Status Position --- */
+        .info-right { text-align: right; display: flex; flex-direction: column; justify-content: space-between; align-self: stretch; }
+        .amount { font-weight: 800; font-size: 16px; letter-spacing: 0.5px; }
+        
+        /* Status Pill dipaksa rata bawah kanan */
+        .status-pill { 
+            font-size: 10px; font-weight: 700; padding: 4px 12px; 
+            border-radius: 10px; background: rgba(255, 255, 255, 0.25); 
+            display: inline-block; align-self: flex-end;
+            margin-top: auto; /* Mendorong ke bawah */
+        }
+
+        .card-kas { background: var(--grad-kas); }
+        .card-ulang { background: var(--grad-ulang); }
+        .card-tarik { background: var(--grad-tarik); }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <div class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></div>
+        <span class="header-title">Riwayat Transaksi</span>
+        <div style="width:38px"></div>
+    </header>
+
+    <div class="tab-container">
+        <div class="tab-item tab-kas active" onclick="switchTab('kas', this)">
+            <i class="fas fa-wallet"></i><span>Kas</span>
+        </div>
+        <div class="tab-item tab-ulang" onclick="switchTab('ulang', this)">
+            <i class="fas fa-arrow-circle-up"></i><span>Isi Ulang</span>
+        </div>
+        <div class="tab-item tab-tarik" onclick="switchTab('tarik', this)">
+            <i class="fas fa-arrow-circle-down"></i><span>Penarikan</span>
+        </div>
+    </div>
+
+    <div id="content-area" class="history-list">
+        <div class="history-card card-kas">
+            <div class="info-left"><h4>Daily Check-in</h4><p>18 Dec 2025 15:43</p></div>
+            <div class="info-right">
+                <span class="amount">+Rp 500</span>
+                <span class="status-pill">Berhasil</span>
+            </div>
+        </div>
+        <div class="history-card card-kas">
+            <div class="info-left"><h4>Bonus Pengguna Baru</h4><p>18 Dec 2025 15:03</p></div>
+            <div class="info-right">
+                <span class="amount">+Rp 20.000</span>
+                <span class="status-pill">Berhasil</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ===== PROTEKSI LOGIN ===== */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+/* ===== AMBIL USER ===== */
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+const user  = users[index];
+
+if (!user) {
+    localStorage.clear();
+    location.href = "daftar-masuk.html";
+}
+
+/* ===== AREA RENDER ===== */
+const area = document.getElementById("content-area");
+
+/* ===== FORMAT RUPIAH ===== */
+function rupiah(n) {
+    return "Rp " + Number(n).toLocaleString("id-ID");
+}
+
+/* ===== RENDER TRANSAKSI ===== */
+function renderTransaksi(type) {
+    area.innerHTML = "";
+
+    if (!user.transaksi || user.transaksi.length === 0) {
+        area.innerHTML = `<p style="text-align:center;color:#999">Belum ada transaksi</p>`;
+        return;
+    }
+
+    const data = user.transaksi
+        .filter(t => t.jenis === type)
+        .sort((a, b) => (b.time || 0) - (a.time || 0))
+
+    if (data.length === 0) {
+        area.innerHTML = `<p style="text-align:center;color:#999">Belum ada transaksi</p>`;
+        return;
+    }
+
+    data.forEach(t => {
+        const cardClass =
+            type === "kas"   ? "card-kas" :
+            type === "ulang" ? "card-ulang" :
+                               "card-tarik";
+
+        const tanda = t.jumlah >= 0 ? "+" : "-";
+
+        area.innerHTML += `
+            <div class="history-card ${cardClass}">
+                <div class="info-left">
+                    <h4>${t.keterangan}</h4>
+                    <p>${t.tanggal}</p>
+                </div>
+                <div class="info-right">
+                    <span class="amount">${tanda}${rupiah(Math.abs(t.jumlah))}</span>
+                    <span class="status-pill">${t.status}</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+/* ===== TAB SWITCH ===== */
+function switchTab(type, el) {
+    document.querySelectorAll(".tab-item").forEach(t => t.classList.remove("active"));
+    el.classList.add("active");
+    renderTransaksi(type);
+}
+
+/* ===== LOAD AWAL ===== */
+renderTransaksi("kas");
+</script>
+</body>
+</html>

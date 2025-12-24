@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Layanan Support - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --white: #ffffff;
+            --text-dark: #262626;
+            /* Gradasi spesifik untuk tiap card agar warna-warni */
+            --grad-wa-channel: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --grad-wa-manager: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --grad-tg-manager: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* --- Animasi --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-card { animation: fadeInUp 0.6s cubic-bezier(0.2, 1, 0.3, 1) forwards; opacity: 0; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #f8f9fa; display: flex; justify-content: center; }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 40px;
+        }
+
+        /* --- Header Instagram Style --- */
+        .header {
+            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #f2f2f2;
+        }
+        .back-btn { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1.5px solid #efefef; cursor: pointer; }
+        .header-title { flex: 1; text-align: center; font-weight: 700; font-size: 17px; background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- Content Layout --- */
+        .content { padding: 20px; }
+
+        .support-card {
+            border-radius: 28px; padding: 25px; margin-bottom: 20px;
+            text-align: center; color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            position: relative; overflow: hidden;
+        }
+
+        /* Efek cahaya pada card */
+        .support-card::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .icon-circle {
+            width: 70px; height: 70px; border-radius: 22px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px; font-size: 35px; background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-title { font-weight: 700; font-size: 18px; margin-bottom: 5px; }
+        .card-desc { font-size: 11px; opacity: 0.9; margin-bottom: 20px; font-weight: 400; }
+
+        .mulai-btn {
+            width: 100%; padding: 14px; border-radius: 15px;
+            background: var(--white); border: none;
+            color: var(--text-dark); font-weight: 700; font-size: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            cursor: pointer; transition: 0.3s; text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .mulai-btn:active { transform: scale(0.96); }
+
+        /* Variasi Warna Card */
+        .bg-wa-channel { background: var(--grad-wa-channel); }
+        .bg-wa-manager { background: var(--grad-wa-manager); }
+        .bg-tg-manager { background: var(--grad-tg-manager); }
+
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <div class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <span class="header-title">Layanan Support</span>
+        <div style="width:38px"></div>
+    </header>
+
+    <div class="content">
+        
+        <div class="support-card bg-wa-channel animate-card" style="animation-delay: 0.1s;">
+            <div class="icon-circle">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <h3 class="card-title">Saluran WhatsApp</h3>
+            <p class="card-desc">Dapatkan info promo & berita investasi terbaru setiap hari.</p>
+            <a href="https://whatsapp.com/channel/0029Vb70xnDAu3aJKmY4bI2k" class="mulai-btn" style="color: #2ecc71;">
+                <i class="fas fa-paper-plane"></i> Gabung Sekarang
+            </a>
+        </div>
+
+        <div class="support-card bg-wa-manager animate-card" style="animation-delay: 0.3s;">
+            <div class="icon-circle">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <h3 class="card-title">Manager WhatsApp</h3>
+            <p class="card-desc">Butuh bantuan transaksi? Hubungi manager pribadi Anda.</p>
+            <a href="https://wa.me/639305882278" class="mulai-btn" style="color: #e6683c;">
+                <i class="fas fa-paper-plane"></i> Hubungi Sekarang
+            </a>
+        </div>
+
+        <div class="support-card bg-tg-manager animate-card" style="animation-delay: 0.5s;">
+            <div class="icon-circle">
+                <i class="fab fa-telegram-plane"></i>
+            </div>
+            <h3 class="card-title">Manager Telegram</h3>
+            <p class="card-desc">Layanan support Telegram aktif 24/7 untuk kendala teknis.</p>
+            <a href="https://t.me/instawealth" class="mulai-btn" style="color: #0088cc;">
+                <i class="fas fa-paper-plane"></i> Hubungi Sekarang
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

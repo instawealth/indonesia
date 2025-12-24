@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Investasi-Saya - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --spotify-gradient: linear-gradient(135deg, #1db954 0%, #191414 100%);
+            --white: #ffffff;
+            --text-dark: #262626;
+            --light-gray: #f8f9fa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--light-gray); display: flex; justify-content: center; overflow-x: hidden; }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 50px;
+        }
+
+        /* --- ANIMASI HALUS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            padding: 15px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--white); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        .back-btn {
+            width: 38px; height: 38px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1.5px solid #efefef; cursor: pointer; color: var(--text-dark);
+        }
+        .header-title {
+            flex: 1; text-align: center; font-weight: 700; font-size: 17px;
+            background: var(--ig-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        /* --- TABS --- */
+        .tabs-container { padding: 10px 20px; background: var(--white); }
+        .tabs-box { display: flex; background: #f1f1f1; padding: 5px; border-radius: 20px; }
+        .tab-btn {
+            flex: 1; padding: 12px 0; text-align: center; font-size: 13px; font-weight: 600;
+            color: #888; cursor: pointer; border-radius: 16px; transition: 0.4s;
+        }
+        .tab-btn.active {
+            background: var(--ig-gradient); color: var(--white);
+            box-shadow: 0 4px 15px rgba(220, 39, 67, 0.3);
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .content-section { display: none; padding: 20px; flex-direction: column; gap: 20px; }
+        .content-section.active { display: flex; }
+
+        /* --- PRODUCT CARDS --- */
+        .product-card {
+            border-radius: 35px; padding: 25px; color: white;
+            position: relative; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        .card-spotify { background: var(--spotify-gradient); }
+        .card-instagram { background: var(--ig-gradient); }
+
+        .product-name { font-size: 20px; font-weight: 700; margin-bottom: 20px; text-align: center; }
+        
+        .image-circle {
+            width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.4);
+        }
+        .image-circle i { font-size: 45px; }
+
+        .timer-box {
+            background: rgba(0,0,0,0.2); border-radius: 15px;
+            padding: 12px; margin-bottom: 20px; text-align: center;
+        }
+        .countdown { font-family: 'monospace'; font-weight: 700; font-size: 22px; }
+
+        .data-list { margin-bottom: 20px; }
+        .data-row { display: flex; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 6px;}
+        .data-label { font-size: 12px; opacity: 0.9; }
+        .data-value { font-size: 12px; font-weight: 600; }
+
+        .btn-claim {
+            width: 100%; padding: 16px; border-radius: 20px; 
+            border: none; font-weight: 700; font-size: 14px; transition: 0.4s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-transform: uppercase;
+        }
+        .locked { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); cursor: not-allowed; }
+        .unlocked { background: white !important; color: var(--text-dark) !important; cursor: pointer; }
+
+        /* --- EMPTY STATE (TABS SELESAI) --- */
+        .empty-state {
+            text-align: center; padding: 60px 20px; color: #bbb;
+        }
+        .empty-state i { font-size: 60px; margin-bottom: 20px; opacity: 0.3; }
+        .empty-state p { font-size: 14px; font-weight: 500; }
+
+        #toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #222; color: white; padding: 12px 25px; border-radius: 50px;
+            font-size: 13px; display: none; z-index: 1000;
+        }
+        .plan-ig { background: var(--ig-gradient); }
+.plan-sp { background: var(--spotify-gradient); }
+.plan-wa { background: #25d366; }
+.plan-tg { background: #0088cc; }
+.plan-fb { background: #1877f2; }
+.plan-tt { background: #111111; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <div class="back-btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i></div>
+        <span class="header-title"> Produk  Saya</span>
+        <div style="width:38px"></div> 
+    </header>
+
+    <div class="tabs-container">
+        <div class="tabs-box">
+            <div class="tab-btn active" onclick="switchTab(event, 'aktif-section')">Produk Aktif</div>
+            <div class="tab-btn" onclick="switchTab(event, 'selesai-section')">Produk Selesai</div>
+        </div>
+    </div>
+
+    <div id="toast">✅ Profit berhasil masuk ke saldo!</div>
+
+    <div id="aktif-section" class="content-section active animate-in">
+        <div class="product-card card-spotify">
+            <h3 class="product-name">Spotify Plan</h3>
+            <div class="image-circle"><i class="fab fa-spotify"></i></div>
+            <div class="timer-box">
+                <div class="countdown" id="timer1">00:00:05</div>
+            </div>
+            <div class="data-list">
+                <div class="data-row"><span class="data-label">Harga Produk</span><span class="data-value">Rp 0</span></div>
+                <div class="data-row"><span class="data-label">Sisa Masa Aktif</span><span class="data-value" id="cycle1">1 / 1000 Hari</span></div>
+                <div class="data-row"><span class="data-label">Profit Harian</span><span class="data-value">Rp 5.000</span></div>
+            </div>
+            <button id="btn1" class="btn-claim locked" onclick="claimProfit('timer1', 'btn1', 'cycle1', 1000)">Klaim Profit</button>
+        </div>
+
+        <div class="product-card card-instagram">
+            <h3 class="product-name">Instagram Plan</h3>
+            <div class="image-circle"><i class="fab fa-instagram"></i></div>
+            <div class="timer-box">
+                <div class="countdown" id="timer2">23:59:59</div>
+            </div>
+            <div class="data-list">
+                <div class="data-row"><span class="data-label">Harga Produk</span><span class="data-value">Rp 100.000</span></div>
+                <div class="data-row"><span class="data-label">Sisa Masa Aktif</span><span class="data-value" id="cycle2">1 / 30 Hari</span></div>
+                <div class="data-row"><span class="data-label">Profit Harian</span><span class="data-value">Rp 15.000</span></div>
+            </div>
+            <button id="btn2" class="btn-claim locked" onclick="claimProfit('timer2', 'btn2', 'cycle2', 30)">Klaim Profit</button>
+        </div>
+    </div>
+
+    <div id="selesai-section" class="content-section">
+        <div class="empty-state animate-in">
+            <i class="fas fa-folder-open"></i>
+            <p>Belum ada produk yang selesai.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ===============================
+   VALIDASI LOGIN
+================================ */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+/* ===============================
+   AMBIL USER LOGIN
+================================ */
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const loginIndex = Number(localStorage.getItem("APP_LOGIN_INDEX"));
+const user = users[loginIndex];
+
+if (!user) {
+    alert("Silakan login ulang");
+    location.href = "daftar-masuk.html";
+}
+
+/* ===============================
+   ELEMENT
+================================ */
+const aktifSection   = document.getElementById("aktif-section");
+const selesaiSection = document.getElementById("selesai-section");
+const toast          = document.getElementById("toast");
+
+/* ===============================
+   UTIL
+================================ */
+function rupiah(n) {
+    return "Rp " + Number(n).toLocaleString("id-ID");
+}
+
+function showToast(text) {
+    toast.innerText = text;
+    toast.style.display = "block";
+    setTimeout(() => toast.style.display = "none", 2000);
+}
+let timers = {};
+/* ===============================
+   RENDER PRODUK AKTIF
+================================ */
+function renderProdukAktif() {
+    // 🔥 HENTIKAN SEMUA TIMER SEBELUM RENDER ULANG
+    Object.values(timers).forEach(clearInterval);
+    timers = {};
+
+    aktifSection.innerHTML = "";
+
+    if (!user.produkAktif || user.produkAktif.length === 0) {
+        aktifSection.innerHTML = `
+        <div class="empty-state animate-in">
+            <i class="fas fa-box-open"></i>
+            <p>Belum ada produk aktif</p>
+        </div>`;
+        return;
+    }
+
+    user.produkAktif.forEach((p) => {
+    aktifSection.innerHTML += `
+    <div class="product-card plan-${p.theme} animate-in">
+        <h3 class="product-name">${p.nama}</h3>
+
+        <div class="image-circle">
+            <i class="fab ${p.icon}"></i>
+        </div>
+
+        <div class="timer-box">
+            <div class="countdown" id="timer-${p.id}">00:00:00</div>
+        </div>
+
+        <div class="data-list">
+            <div class="data-row">
+                <span class="data-label">Harga Produk</span>
+                <span class="data-value">${rupiah(p.harga)}</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Sisa Masa Aktif</span>
+                <span class="data-value">
+                    ${p.hariKe} / ${p.kontrak} Hari
+                </span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Profit Harian</span>
+                <span class="data-value">${rupiah(p.harian)}</span>
+            </div>
+        </div>
+
+        <button id="btn-${p.id}"
+            class="btn-claim locked"
+            onclick="klaimProfit('${p.id}')">
+            Klaim Profit
+        </button>
+    </div>
+    `;
+    startTimer(p.id);
+});
+}
+
+/* ===============================
+   TIMER PROFIT (ANTI REFRESH)
+================================ */
+function startTimer(id) {
+    const produk = user.produkAktif.find(p => p.id === id);
+    const btn = document.getElementById(`btn-${id}`);
+    const timerEl = document.getElementById(`timer-${id}`);
+    if (!produk || !btn || !timerEl) return;
+
+    const now = Date.now();
+    const last = produk.terakhirKlaim || 0;
+    let sisa = Math.max(0, 86400 - Math.floor((now - last) / 1000));
+
+    timers[id] = setInterval(() => {
+        let h = Math.floor(sisa / 3600);
+        let m = Math.floor((sisa % 3600) / 60);
+        let s = sisa % 60;
+
+        timerEl.textContent =
+            `${h.toString().padStart(2,'0')}:` +
+            `${m.toString().padStart(2,'0')}:` +
+            `${s.toString().padStart(2,'0')}`;
+
+        if (sisa <= 0) {
+            clearInterval(timers[id]);
+            btn.classList.remove("locked");
+            btn.classList.add("unlocked");
+            btn.innerHTML = '<i class="fas fa-coins"></i> Klaim Profit';
+            return;
+        }
+
+        sisa--;
+    }, 1000);
+}
+
+/* ===============================
+   KLAIM PROFIT
+================================ */
+function klaimProfit(id) {
+    const index = user.produkAktif.findIndex(p => p.id === id);
+    if (index === -1) return;
+
+    const p = user.produkAktif[index];
+    const btn = document.getElementById(`btn-${id}`);
+    if (!btn || btn.classList.contains("locked")) return;
+
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+    setTimeout(() => {
+
+        if (!user.transaksi) user.transaksi = [];
+
+        user.saldo.penarikan += p.harian;
+        p.hariKe++;
+        p.terakhirKlaim = Date.now();
+
+        user.transaksi.unshift({
+            id: "TRX-" + Date.now(),
+            jenis: "kas",
+            keterangan: "Profit " + p.nama,
+            jumlah: p.harian,
+            status: "Berhasil",
+            tanggal: new Date().toLocaleString("id-ID"),
+            time: Date.now()
+        });
+
+        if (p.hariKe > p.kontrak) {
+            p.status = "selesai";
+            user.produkSelesai.push(p);
+            user.produkAktif.splice(index, 1);
+            showToast("🎉 Produk selesai!");
+        } else {
+            showToast("✅ Profit masuk ke saldo!");
+        }
+
+        users[loginIndex] = user;
+        localStorage.setItem("APP_USERS", JSON.stringify(users));
+
+        renderProdukAktif();
+        renderProdukSelesai();
+
+    }, 1200);
+}
+
+/* ===============================
+   RENDER PRODUK SELESAI
+================================ */
+function renderProdukSelesai() {
+    selesaiSection.innerHTML = "";
+
+    if (!user.produkSelesai || user.produkSelesai.length === 0) {
+        selesaiSection.innerHTML = `
+        <div class="empty-state animate-in">
+            <i class="fas fa-folder-open"></i>
+            <p>Belum ada produk selesai</p>
+        </div>`;
+        return;
+    }
+
+    user.produkSelesai.forEach(p => {
+        selesaiSection.innerHTML += `
+        <div class="product-card plan-${p.theme} animate-in">
+            <h3 class="product-name">${p.nama}</h3>
+
+            <div class="image-circle">
+                <i class="fab ${p.icon}"></i>
+            </div>
+
+            <div class="data-list">
+                <div class="data-row">
+                    <span class="data-label">Total Profit</span>
+                    <span class="data-value">
+                        ${rupiah(p.harian * p.kontrak)}
+                    </span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">Status</span>
+                    <span class="data-value">Selesai</span>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+}
+
+/* ===============================
+   INIT
+================================ */
+renderProdukAktif();
+renderProdukSelesai();
+</script>
+<script>
+function switchTab(evt, sectionId) {
+    let sections = document.getElementsByClassName("content-section");
+    let tabBtns  = document.getElementsByClassName("tab-btn");
+
+    for (let i = 0; i < sections.length; i++) {
+        sections[i].classList.remove("active", "animate-in");
+    }
+    for (let i = 0; i < tabBtns.length; i++) {
+        tabBtns[i].classList.remove("active");
+    }
+
+    const activeSection = document.getElementById(sectionId);
+    activeSection.classList.add("active");
+    void activeSection.offsetWidth;
+    activeSection.classList.add("animate-in");
+
+    evt.currentTarget.classList.add("active");
+
+    /* 🔥 PENTING */
+    if (sectionId === "aktif-section") {
+        renderProdukAktif();
+    } else if (sectionId === "selesai-section") {
+        renderProdukSelesai();
+    }
+}
+</script>
+</body>
+</html>

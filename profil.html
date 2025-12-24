@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profil - Insta-Wealth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --primary-orange: #f09433;
+            --text-active: #f09433;
+            --text-inactive: #999999;
+            --white: #ffffff;
+            --bg-body: #f4f7f8;
+            --ig-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            text-decoration: none;
+        }
+
+        body { 
+            background-color: var(--bg-body); 
+            display: flex; justify-content: center; 
+            overflow-x: hidden;
+            color: #333;
+        }
+
+        .app-container {
+            width: 100%; max-width: 414px; background-color: var(--white);
+            min-height: 100vh; position: relative; padding-bottom: 100px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header --- */
+        .header {
+            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
+            background: var(--white); position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #f0f0f0;
+        }
+        .user-info-top span { display: block; font-size: 11px; color: #888; font-weight: 700; }
+        .user-info-top b { font-size: 15px; color: #333; }
+        .welcome-right { text-align: right; font-size: 13px; font-weight: 700; color: #555; }
+        .welcome-right span { color: var(--primary-orange); display: block; font-size: 15px; }
+
+        .content-padding { padding: 0 16px; }
+
+        /* --- Banner Profil --- */
+        .profile-banner {
+            width: 100%; background: var(--ig-gradient);
+            border-radius: 24px; padding: 25px; margin-top: 15px; color: white;
+            position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(220, 39, 67, 0.2);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .banner-text h2 { font-size: 20px; font-weight: 800; line-height: 1.2; margin-bottom: 5px; }
+        .banner-text p { font-size: 11px; opacity: 0.9; font-weight: 500; }
+        
+        .avatar-box {
+            width: 80px; height: 80px; background: rgba(255,255,255,0.2);
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            border: 2px solid rgba(255,255,255,0.4); overflow: hidden;
+        }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- Laporan Saldo (Warna Gradasi Baru) --- */
+        .section-title { font-weight: 800; font-size: 17px; margin: 25px 0 15px 0; color: #333; display: flex; align-items: center; gap: 8px; }
+        .section-title::before { content: ''; width: 4px; height: 16px; background: var(--primary-orange); border-radius: 10px; }
+
+        .saldo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .saldo-card {
+            border-radius: 22px; padding: 18px; text-align: center; color: white;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08); transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        /* Definisi Gradasi Per Kotak */
+        .grad-1 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .grad-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .grad-3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .grad-4 { background: var(--ig-gradient); }
+        
+        .icon-circle-glass {
+            width: 40px; height: 40px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; margin-bottom: 10px;
+            font-size: 18px; color: white; background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .saldo-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+        .saldo-card p { font-size: 10px; opacity: 0.9; font-weight: 600; text-transform: capitalize; }
+
+        /* --- Menu List --- */
+        .menu-container { margin-top: 25px; border: 1px solid #f0f0f0; border-radius: 20px; overflow: hidden; margin-bottom: 20px; background: #fff;}
+        .menu-item {
+            display: flex; align-items: center; padding: 16px 20px;
+            border-bottom: 1px solid #f8f8f8; cursor: pointer; transition: 0.2s;
+        }
+        .menu-item:active { background: #fafafa; }
+        .menu-item i:first-child { width: 30px; font-size: 18px; color: #aaa; }
+        .menu-item span { flex: 1; font-size: 14px; font-weight: 600; color: #444; }
+        .menu-item .fa-chevron-right { font-size: 12px; color: #ccc; }
+
+        /* --- Navbar --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 414px;
+    height: 75px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    z-index: 1000;
+}
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-inactive); flex: 1; }
+        .nav-item.active { color: var(--text-active); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
+        .nav-item span { font-size: 10px; font-weight: 700; }
+
+        /* --- Animations --- */
+        .smooth-up {
+            animation: smoothUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            opacity: 0; transform: translateY(15px);
+        }
+        @keyframes smoothUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header class="header">
+        <div class="user-info-top">
+            <span>ID: <span id="userId"></span></span>
+<b>Akun: <span id="userHp"></span></b>
+        </div>
+        <div class="welcome-right">
+    Selamat Datang!
+    <span id="userName"></span>
+</div>
+    </header>
+
+    <div class="content-padding">
+        <div class="profile-banner smooth-up" style="animation-delay: 0.1s;">
+            <div class="banner-text">
+                <div style="background: rgba(255,255,255,0.25); padding: 3px 10px; border-radius: 50px; display: inline-block; font-size: 9px; font-weight: 800; margin-bottom: 8px;">MEMBER ELITE</div>
+                <h2>Profil Akun<br>& Pengaturan</h2>
+                <p>Pantau saldo dan atur akun Anda.</p>
+            </div>
+            <div class="avatar-box">
+    <img id="userAvatar" src="" alt="User Avatar">
+</div>
+        </div>
+
+        <div class="section-title smooth-up" style="animation-delay: 0.2s;">Laporan Saldo</div>
+        
+        <div class="saldo-grid">
+            <div class="saldo-card grad-1 smooth-up" style="animation-delay: 0.3s;">
+                <div class="icon-circle-glass"><i class="fas fa-wallet"></i></div>
+                <h3 id="saldoPenarikan">Rp 0</h3>
+<p>Dompet penarikan</p>
+            </div>
+            <div class="saldo-card grad-2 smooth-up" style="animation-delay: 0.4s;">
+                <div class="icon-circle-glass"><i class="fas fa-coins"></i></div>
+<h3 id="saldoDeposit">Rp 0</h3>
+<p>Dompet isi ulang</p>
+            </div>
+            <div class="saldo-card grad-3 smooth-up" style="animation-delay: 0.5s;">
+                <div class="icon-circle-glass"><i class="fas fa-chart-line"></i></div>
+                <h3 id="profitKemarin">Rp 0</h3>
+<p>Profit kemarin</p>
+            </div>
+            <div class="saldo-card grad-4 smooth-up" style="animation-delay: 0.6s;">
+                <div class="icon-circle-glass"><i class="fas fa-star"></i></div>
+                <h3 id="totalPendapatan">Rp 0</h3>
+<p>Total pendapatan</p>
+            </div>
+        </div>
+
+<div class="menu-container smooth-up" style="animation-delay: 0.8s;">
+    <a href="catatan.html" class="menu-item"><i class="fas fa-history"></i><span>Riwayat Transaksi</span><i class="fas fa-chevron-right"></i></a>
+    <a href="bank-info.html" class="menu-item"><i class="fas fa-university"></i><span>Data Rekening Bank</span><i class="fas fa-chevron-right"></i></a>
+    <a href="account-settings.html" class="menu-item"><i class="fas fa-key"></i><span>Profil Akun</span><i class="fas fa-chevron-right"></i></a>
+    <div class="menu-item" onclick="logout()">
+    <i class="fas fa-sign-out-alt"></i>
+    <span>Keluar Akun</span>
+    <i class="fas fa-chevron-right"></i>
+</div>
+</div>
+
+    
+
+    <nav class="bottom-nav">
+        <a href="beranda.html" class="nav-item"><i class="fas fa-home"></i><span>Beranda</span></a>
+        <a href="investasi-saya.html" class="nav-item"><i class="fas fa-briefcase"></i><span>Investasi</span></a>
+        <a href="team.html" class="nav-item"><i class="fas fa-users"></i><span>Team</span></a>
+        <a href="profil.html" class="nav-item active"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+</div>
+<script>
+/* ===== PROTEKSI LOGIN ===== */
+if (localStorage.getItem("APP_LOGIN") !== "true") {
+    location.href = "daftar-masuk.html";
+}
+
+const users = JSON.parse(localStorage.getItem("APP_USERS")) || [];
+const index = localStorage.getItem("APP_LOGIN_INDEX");
+
+if (index === null || !users[index]) {
+    localStorage.clear();
+    location.href = "index.html";
+}
+
+const user = users[index];
+
+/* ===== UTIL FORMAT RUPIAH ===== */
+function rupiah(angka) {
+    return "Rp " + angka.toLocaleString("id-ID");
+}
+
+/* ===== SET DATA USER ===== */
+document.getElementById("userId").innerText   = user.id;
+document.getElementById("userHp").innerText   = user.hp;
+document.getElementById("userName").innerText = user.nama;
+
+/* ===== AVATAR ===== */
+document.getElementById("userAvatar").src =
+    "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+    encodeURIComponent(user.nama);
+
+// ===== SALDO =====
+document.getElementById("saldoDeposit").innerText = rupiah(user.saldo.deposit);
+document.getElementById("saldoPenarikan").innerText = rupiah(user.saldo.penarikan);
+
+// ===== TOTAL PENDAPATAN =====
+// Hanya ambil transaksi profit atau kas, bukan deposit atau pembelian produk
+const totalPendapatan = (user.transaksi || [])
+    .filter(t => (t.jenis === "profit" || t.jenis === "kas") && !t.excludeFromTotal)
+    .reduce((a, b) => a + b.jumlah, 0);
+
+// ===== PROFIT KEMARIN (optional) =====
+const profitKemarin = 0; // Bisa diubah sesuai logika tanggal kemarin
+
+document.getElementById("profitKemarin").innerText = rupiah(profitKemarin);
+document.getElementById("totalPendapatan").innerText = rupiah(totalPendapatan);
+
+if (profitEl) profitEl.innerText = rupiah(0);
+if (totalEl)  totalEl.innerText  = rupiah(total);
+</script>
+<script>
+function logout(){
+    localStorage.removeItem("APP_LOGIN");
+    localStorage.removeItem("APP_LOGIN_INDEX");
+    location.href = "daftar-masuk.html";
+}
+</script>
+</body>
+</html>
